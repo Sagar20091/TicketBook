@@ -8,6 +8,12 @@ import { MasterService } from 'src/app/service/master.service';
 })
 export class SearchComponent implements OnInit {
   locationNames:any[]=[];
+  searchObj :any={
+    fromLocation :'',
+    toLocation :'',
+    travelDate:''
+  }
+  busList: any[]=[];
   constructor(private service : MasterService){
     
 
@@ -16,14 +22,23 @@ export class SearchComponent implements OnInit {
     this.getBusLocation();
   }
 
-  getBusLocation():void{
-    this.service.getLocation().subscribe((res)=>{
-      this.locationNames=res.map((location)=>{
-        return         location.locationName
+  getBusLocation(): void {
+    this.service.getLocation().subscribe((res) => {
+      this.locationNames = res.map((location) => {
+        return location.locationName
 
       }
       )
       console.log(this.locationNames)
+    })
+  }
+
+  searchBuses(){
+    const {fromLocation,toLocation,travelDate}=this.searchObj;
+    console.log(this.searchObj)
+    this.service.SearchBus(fromLocation,toLocation,travelDate).subscribe((res:any)=>{
+      this.busList=res;
+      console.log(this.busList)
     })
   }
 
